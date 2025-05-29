@@ -16,9 +16,20 @@ sestatus
 ```
 Be sure to add port 14355 to SELinux. Replace &lt;type&gt;, &lt;protocol&gt;, and &lt;port_number&gt; in command semanage port -a -t &lt;type&gt; -p &lt;protocol&gt; &lt;port_number&gt;.
 ```bash
-semanage port -a -t ssh-port_t -p tcp 14355
+semanage port -a -t ssh_port_t -p tcp 14355
 ```
-Restarting the sshd service.
+Restarting the ssh service.
+```bash
+systemctl restart sshd
+```
+### Blocking root login via SSH
+In any text editor, open the file /etc/ssh/sshd_config.
+```bash
+nano /etc/ssh/sshd_config
+```
+Find the line shown below:  
+PermitRootLogin yes  
+Change the value from yes to no. Save and close the file. Then restart the SSH service.  
 ```bash
 systemctl restart sshd
 ```
