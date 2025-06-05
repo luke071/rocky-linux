@@ -18,6 +18,11 @@ Be sure to add port 14355 to SELinux. Replace &lt;type&gt;, &lt;protocol&gt;, an
 ```bash
 semanage port -a -t ssh_port_t -p tcp 14355
 ```
+Change the Firewall
+```
+sudo firewall-cmd --permanent --add-port=14355/tcp
+sudo firewall-cmd --reload
+```
 Restarting the ssh service.
 ```bash
 systemctl restart sshd
