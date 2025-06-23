@@ -50,3 +50,25 @@ systemctl restart sshd
 9. Configure access to the website located in the user's directory via the userdir module.
 10. Restart Apache.
 11. Test access to websites.
+12. After adding a 2 GB disk to the machine, create two partitions of 1 GB each with automatic punting after reboot.
+13. Check the technical condition of this disk with smartctl.
+14. Create the Guests group and the Guest-1 user with a home directory for which the maximum number of days between password changes is 5 days.
+15. Assign the Guest-1 account to the Guests group.
+16. In the Guest-1 home directory, create a hidden documents directory and give it full rights for the Guests group.
+17. Create files file-1, file-2 and file-3 in Guest-1's home directory. Then create a compressed .tar.gz archive from these files.
+18. Log in as root.
+19. Execute the command alias top -b -n 1 | head -n 17
+20. Check the complete information about the system kernel.
+21. Check the version and name of the distribution.
+22. Check system uptime and load.
+23. Check what uses the most RAM.
+24. Check the parameters of the motherboard, processor, RAM, network cards.
+25. Check the sysk and partition structure.
+26. Check the active connection and listening ports.
+27. View system logs.
+28. View kernel messages.
+
+
+
+
+
