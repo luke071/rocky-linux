@@ -1,7 +1,8 @@
 # Introduce to Rocky Linux 9
 ## Apache installation
-1. Installing HTTPD packages.  
+1. Update system then install HTTP packages.  
 ```bash
+sudo dnf update -y
 sudo dnf install httpd
 ```
 2. Start the service immediately and configure the service to start after each system boot.  
@@ -21,7 +22,7 @@ sudo firewall-cmd --reload
 ```
 
 ## Introductory scenario
-1. Check if Apache is running and set static IP addresses on the interface.
+1. Check the existing existence of the host. Change the host to web-server . Then check if Apache is running and set static IP addresses on the interface.  
 2. Create the main directory /www and subpages in this directory /wimbledon and /french-open
 3. Create index.html files in the main directory and subpages.
 4. Set permissions.
@@ -53,6 +54,9 @@ sudo firewall-cmd --reload
 
 1. 
 ```bash
+su -
+hostnamectl status
+hostnamectl set-hostname web-server
 systemctl status httpd
 nmcli connection show
 sudo nmcli con modify "enp0s2" ipv4.method manual ipv4.addresses "192.168.0.50/24,192.168.0.51/24" ipv4.gateway 192.168.0.1 ipv4.dns 8.8.8.8
@@ -226,3 +230,23 @@ Change the value from yes to no. Save and close the file. Then restart the SSH s
 ```bash
 systemctl restart sshd
 ```
+
+## Cockpit installation
+
+1. After updating the system, install Cockpit.  
+```bash
+sudo dnf update -y
+sudo dnf install -y cockpit
+```
+2. Turning on and running Cockpit.  
+```bash
+sudo systemctl enable --now cockpit.socket
+```
+3. Open the port in firewalld.  
+```bash
+sudo firewall-cmd --permanent --add-service=cockpit
+sudo firewall-cmd --reload
+```
+4. Launching Cockpit in the browser.  
+https://<adres_IP_serwera>:9090  
+![alt text](./assets/cockpit.png)  
