@@ -1,4 +1,4 @@
-# Introduce to Rocky Linux 
+# Introduce to Rocky Linux 9
 ## Apache installation
 1. Installing HTTPD packages.  
 ```bash
@@ -78,6 +78,7 @@ chmod -R 755 /www
 ```bash
 nano /etc/httpd/conf.d/custom-sites.conf
 ```
+```bash
 <VirtualHost 192.168.0.50:100>
     DocumentRoot "/www/wimbledon"
     <Directory "/www/wimbledon">
@@ -102,7 +103,7 @@ nano /etc/httpd/conf.d/custom-sites.conf
         Require all granted
     </Directory>
 </VirtualHost>
-
+```
 6. Added Listen 100 listening.  
 ```bash
 nano /etc/httpd/conf.d/custom-sites.conf
@@ -139,7 +140,7 @@ http://192.168.0.50 - show home page
 http://192.168.0.51 - show home page   
 ![alt text](./assets/3.png)  
 9.  Enabling the UserDir module by editing the /etc/httpd/conf.d/userdir.conf file.  
-
+```bash
 <IfModule mod_userdir.c>
     UserDir public_html
     UserDir enabled student
@@ -149,7 +150,7 @@ http://192.168.0.51 - show home page
     AllowOverride None
     Require all granted
 </Directory>
-
+```
 Execution of the command  
 ```bash
 httpd -M | grep userdir
