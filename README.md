@@ -173,8 +173,18 @@ chmod 711 ~
 ```
 10. Browser accessibility test of the user's home directory.  
 
-http://192.168.0.50/~player - will show the page in the player user directory  
+http://192.168.0.50/~student - will show the page in the student user directory  
 ![alt text](./assets/4.png)  
+
+21. 
+```bash
+cat /etc/os-release
+```
+22. 
+```bash
+uptime
+```
+
 
 
 ## How to secure Rocky Linux 9
