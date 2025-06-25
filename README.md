@@ -1,5 +1,6 @@
 # Introduce to Rocky Linux 9
-## Apache installation
+Rocky Linux 9 is built directly from RHEL 9 sources and has identical features, fixes and behavior.  
+# 1. Apache installation
 1. Update system then install HTTP packages.  
 ```bash
 sudo dnf update -y
@@ -21,7 +22,7 @@ sudo firewall-cmd --permanent --add-service=https
 sudo firewall-cmd --reload
 ```
 
-## Introductory scenario
+# 2. Introductory scenario
 1. Check the existing existence of the host. Change the host to web-server . Then check if Apache is running and set static IP addresses on the interface.  
 2. Create the main directory /www and subpages in this directory /wimbledon and /french-open
 3. Create index.html files in the main directory and subpages.
@@ -50,7 +51,7 @@ sudo firewall-cmd --reload
 27. View system logs.
 28. View kernel messages.
 
-### Solution
+## Solution
 
 1. 
 ```bash
@@ -191,8 +192,8 @@ uptime
 
 
 
-## How to secure Rocky Linux 9
-### Logging failed login attempts to a text file.  
+# 3. How to secure Rocky Linux 9
+## Logging failed login attempts to a text file.  
 ```bash
 grep "Failed password" /var/log/secure > failed-password.txt 
 ```
