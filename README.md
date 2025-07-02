@@ -181,6 +181,57 @@ chmod 711 ~
 http://192.168.0.50/~student - will show the page in the student user directory  
 ![alt text](./assets/4.png)  
 
+
+11. After adding a new hard drive in Virtualbox (with the Pre-allocate Full Size option).  
+```bash
+lsblk
+```
+![alt text](./assets/disc-1.png)  
+```bash
+fdisk /dev/sdb
+```
+First partition  
+n - new partition   
+p - primary type  
+1 - partition number   
+first sector - press enter   
++1G
+  
+First partition  
+n - new partition   
+p - primary type  
+2 - partition number   
+first sector - press enter   
++1024MB
+  
+w - save changes  
+
+Once the partitions are created, they must be formatted using the appropriate file system.  
+
+```bash
+mkfs.ext4 /dev/sdb1
+mkfs.ext4 /dev/sdb2
+mkdir /mnt/disc1 /mnt/disc2
+```
+Check UUID and add in fstab file  UUID="XXX-XXX-XXX" /mtn/disc1 ext4 defaults 0 2  
+UUID="XXX-XXX-XXX" /mtn/disc2 ext4 defaults 0 2  
+```bash
+blkid
+nano /etc/fstab
+```
+Mount and restart the system.    
+```bash
+mount -a
+restart
+```
+Added mounting after restart.  
+```bash
+df - h
+```
+Test:  
+![alt text](./assets/disc-2.png)  
+
+
 21. 
 ```bash
 cat /etc/os-release
@@ -231,6 +282,7 @@ Change the value from yes to no. Save and close the file. Then restart the SSH s
 ```bash
 systemctl restart sshd
 ```
+
 
 ## Cockpit installation
 
