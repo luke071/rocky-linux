@@ -33,23 +33,21 @@ sudo firewall-cmd --reload
 8. Configure SELinux to allow Apache to use non-standard ports.
 9. Configure access to the website located in the user's directory via the userdir module.
 10. Test access to websites.
-12. After adding a 2 GB disk to the machine, create two partitions of 1 GB each with automatic punting after reboot.
-13. Check the technical condition of this disk with smartctl.
-14. Create the Guests group and the Guest-1 user with a home directory for which the maximum number of days between password changes is 5 days.
-15. Assign the Guest-1 account to the Guests group.
-16. In the Guest-1 home directory, create a hidden documents directory and give it full rights for the Guests group.
-17. Create files file-1, file-2 and file-3 in Guest-1's home directory. Then create a compressed .tar.gz archive from these files.
-18. Log in as root.
-19. Execute the command alias top -b -n 1 | head -n 17
-20. Check the complete information about the system kernel.
-21. Check the version and name of the distribution.
-22. Check system uptime and load.
-23. Check what uses the most RAM.
-24. Check the parameters of the motherboard, processor, RAM, network cards.
-25. Check the sysk and partition structure.
-26. Check the active connection and listening ports.
-27. View system logs.
-28. View kernel messages.
+11. After adding a 2 GB disk to the machine, create two partitions of 1 GB each with automatic punting after reboot.
+12. Check the technical condition of this disk with smartctl.
+13. Create the Guests group and the Guest-1 user with a home directory for which the maximum number of days between password changes is 5 days. 
+14. Assign the Guest-1 account to the Guests group. In the Guest-1 home directory, create a hidden documents directory and give it full rights for the Guests group.  
+15. Create files file-1, file-2 and file-3 in Guest-1's home directory. Create a compressed .tar.gz archive from these files. Then unpack the archive to a folder in home directory /Guest-1/unpacked .
+16. Execute the command alias top -b -n 1 | head -n 17.
+17. Check the complete information about the system kernel.
+18. Check the version and name of the distribution.
+19. Check system uptime and load.
+20. Check what uses the most RAM.
+21. Check the parameters of the motherboard, processor, RAM.
+22. Check the active connection and listening ports.
+23. View system logs.
+24. View kernel messages.
+25. Disable ping(ICMP echo).
 
 ## Solution
 
@@ -231,14 +229,97 @@ df - h
 Test:  
 ![alt text](./assets/disc-2.png)  
 
+12. Installing the smartmontools hard drive monitoring and diagnostics toolkit.  
+```bash
+dnf install smartmontools
+```
+Performing a short test.  
+```bash
+smartctl -t short /dev/sdb
+```
 
-21. 
+13. 
+
+```bash
+sudo groupadd Guests
+sudo useradd -m -G Guests -e "" -s /bin/bash Guest-1
+sudo passwd Guest-1
+sudo chage -M 5 Guest-1
+```
+
+14.     
+
+```bash
+sudo -u Guest-1 mkdir /home/Guest-1/.documents
+sudo chmod 770 /home/Guest-1/.documents
+sudo chown Guest-1:Guests /home/Guest-1/.documents
+```
+
+15. 
+
+```bash
+sudo -u Guest-1 touch /home/Guest-1/file-{1..3}
+sudo -u Guest-1 tar -czvf /home/Guest-1/files.tar.gz -C /home/Guest-1 file-1 file-2 file-3
+mkdir /home/Guest-1/unpacked
+tar -xvzf /home/Guest-1/files.tar.gz -C /home/Guest-1/unpacked
+```
+
+16. 
+
+```bash
+alias toptop='top -b -n 1 | head -n 17'
+```
+Alias use.
+```bash
+toptop
+```
+17. 
+```bash
+uname -a
+```
+18. 
 ```bash
 cat /etc/os-release
 ```
-22. 
+19. 
 ```bash
 uptime
+```
+20. 
+```bash
+ps aux --sort=-%mem | head
+```
+21. 
+```bash
+sudo dnf install dmidecode pciutils -y
+sudo dmidecode | less
+lscpu
+free -h
+lspci
+```
+22. 
+```bash
+ss -tulnp
+```
+23. 
+```bash
+journalctl -xe | less
+```
+24. 
+```bash
+dmesg | less
+```
+25. 
+Permanently disable ping.
+```bash
+sudo firewall-cmd --add-icmp-block=echo-request --permanent
+sudo firewall-cmd --reload
+```
+
+Re-enable ping.
+```bash
+sudo firewall-cmd --remove-icmp-block=echo-request --permanent
+sudo firewall-cmd --reload
 ```
 
 
