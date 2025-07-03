@@ -205,17 +205,21 @@ first sector - press enter
   
 w - save changes  
 
-Once the partitions are created, they must be formatted using the appropriate file system.  
+Once the partitions are created, they must be formatted using the appropriate file system. Then create folders disc1 and disc2.   
 
 ```bash
 mkfs.ext4 /dev/sdb1
 mkfs.ext4 /dev/sdb2
 mkdir /mnt/disc1 /mnt/disc2
 ```
-Check UUID and add in fstab file  UUID="XXX-XXX-XXX" /mtn/disc1 ext4 defaults 0 2  
-UUID="XXX-XXX-XXX" /mtn/disc2 ext4 defaults 0 2  
+Check UUID.
 ```bash
 blkid
+```
+Add in file fstab:  
+UUID="XXX-XXX-XXX" /mtn/disc1 ext4 defaults 0 2  
+UUID="XXX-XXX-XXX" /mtn/disc2 ext4 defaults 0 2  
+```bash
 nano /etc/fstab
 ```
 Mount and restart the system.    
@@ -223,7 +227,7 @@ Mount and restart the system.
 mount -a
 restart
 ```
-Added mounting after restart.  
+Checking mounting after restart.  
 ```bash
 df - h
 ```
