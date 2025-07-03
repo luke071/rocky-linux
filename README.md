@@ -3,23 +3,24 @@ Rocky Linux 9 is built directly from RHEL 9 sources and has identical features, 
 # 1. Apache installation
 1. Update system then install HTTP packages.  
 ```bash
-sudo dnf update -y
-sudo dnf install httpd
+su -
+dnf update -y
+dnf install httpd
 ```
 2. Start the service immediately and configure the service to start after each system boot.  
 ```bash
-sudo systemctl start httpd
-sudo systemctl enable httpd
+systemctl start httpd
+systemctl enable httpd
 ```
 3. Status check.  
 ```bash
-sudo systemctl status httpd
+systemctl status httpd
 ```
 4. Allow HTTP and HTTPS traffic in the firewall.  
 ```bash
-sudo firewall-cmd --permanent --add-service=http
-sudo firewall-cmd --permanent --add-service=https
-sudo firewall-cmd --reload
+firewall-cmd --permanent --add-service=http
+firewall-cmd --permanent --add-service=https
+firewall-cmd --reload
 ```
 
 # 2. Introductory scenario
@@ -241,10 +242,10 @@ smartctl -t short /dev/sdb
 13. 
 
 ```bash
-sudo groupadd Guests
-sudo useradd -m -G Guests -e "" -s /bin/bash Guest-1
-sudo passwd Guest-1
-sudo chage -M 5 Guest-1
+groupadd Guests
+useradd -m -G Guests -e "" -s /bin/bash Guest-1
+passwd Guest-1
+chage -M 5 Guest-1
 ```
 
 14.     
@@ -291,8 +292,8 @@ ps aux --sort=-%mem | head
 ```
 21. 
 ```bash
-sudo dnf install dmidecode pciutils -y
-sudo dmidecode | less
+dnf install dmidecode pciutils -y
+dmidecode | less
 lscpu
 free -h
 lspci
@@ -312,14 +313,14 @@ dmesg | less
 25. 
 Permanently disable ping.
 ```bash
-sudo firewall-cmd --add-icmp-block=echo-request --permanent
-sudo firewall-cmd --reload
+firewall-cmd --add-icmp-block=echo-request --permanent
+firewall-cmd --reload
 ```
 
 Re-enable ping.
 ```bash
-sudo firewall-cmd --remove-icmp-block=echo-request --permanent
-sudo firewall-cmd --reload
+firewall-cmd --remove-icmp-block=echo-request --permanent
+firewall-cmd --reload
 ```
 
 
@@ -327,6 +328,7 @@ sudo firewall-cmd --reload
 # 3. How to secure Rocky Linux 9
 ## Logging failed login attempts to a text file.  
 ```bash
+su -
 grep "Failed password" /var/log/secure > failed-password.txt 
 ```
 ### Changing the SSH port  
@@ -366,13 +368,13 @@ systemctl restart sshd
 ### Fail2Ban
 Fail2Ban is available in the EPEL repository.  
 ```bash
-sudo dnf install epel-release -y
+dnf install epel-release -y
 ```
 Installation, switching on, start-up fail2ban.  
 ```bash
-sudo dnf install fail2ban
-sudo systemctl enable fail2ban
-sudo systemctl start fail2ban
+dnf install fail2ban
+systemctl enable fail2ban
+systemctl start fail2ban
 ```
 According to domnetacja you should not modify the jail.conf configuration file directly, so a copy of this file will be created.  
 ```bash
@@ -396,7 +398,7 @@ bantime = 10800
 Fail2ban configuration reload.  
 
 ```bash
- sudo fail2ban-client reload
+fail2ban-client reload
 ```
 
 
@@ -404,17 +406,18 @@ Fail2ban configuration reload.
 
 1. After updating the system, install Cockpit.  
 ```bash
-sudo dnf update -y
-sudo dnf install -y cockpit
+su -
+dnf update -y
+dnf install -y cockpit
 ```
 2. Turning on and running Cockpit.  
 ```bash
-sudo systemctl enable --now cockpit.socket
+systemctl enable --now cockpit.socket
 ```
 3. Open the port in firewalld.  
 ```bash
-sudo firewall-cmd --permanent --add-service=cockpit
-sudo firewall-cmd --reload
+firewall-cmd --permanent --add-service=cockpit
+firewall-cmd --reload
 ```
 4. Launching Cockpit in the browser.  
 https://<server_ip_address>:9090  
