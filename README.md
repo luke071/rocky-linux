@@ -334,7 +334,7 @@ In any text editor, open the file /etc/ssh/sshd_config.
 ```bash
 nano /etc/ssh/sshd_config
 ```
-Find the line with #Port 22 remove # and change it to example Port 14355.
+Find the line with #Port 22 remove # and change it to example Port 14355 (recommended ports from 1025 to 65535).
 Check the current SELinux mode:
 ```bash
 sestatus
@@ -363,9 +363,44 @@ Change the value from yes to no. Save and close the file. Then restart the SSH s
 ```bash
 systemctl restart sshd
 ```
+### Fail2Ban
+Fail2Ban is available in the EPEL repository.  
+```bash
+sudo dnf install epel-release -y
+```
+Installation, switching on, start-up fail2ban.  
+```bash
+sudo dnf install fail2ban
+sudo systemctl enable fail2ban
+sudo systemctl start fail2ban
+```
+According to domnetacja you should not modify the jail.conf configuration file directly, so a copy of this file will be created.  
+```bash
+cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+```
+Ignoring specific ip address and range. Open /etc/fail2ban/jail.local and add after the default loopback address the example ignored IP address and ignored network address.  
+
+ignoreip = 127.0.0.1/8 ::1 192.168.0.100 172.17.0.0/16  
+
+Sshd service blocking policy in fail2ban. Open file /etc/fail2ban/jail.local and add sample settings after 3 failed login attempts within 3600 s (24 h) setting the lock to 10800 (72 h):  
+
+[sshd]  
+enabled = true  
+port = ssh  
+filter = sshd  
+logpath = /var/log/auth.log  
+maxretry = 3  
+findtime = 3600  
+bantime = 10800  
+
+Fail2ban configuration reload.  
+
+```bash
+ sudo fail2ban-client reload
+```
 
 
-## Cockpit installation
+# 4. Cockpit installation
 
 1. After updating the system, install Cockpit.  
 ```bash
@@ -382,5 +417,5 @@ sudo firewall-cmd --permanent --add-service=cockpit
 sudo firewall-cmd --reload
 ```
 4. Launching Cockpit in the browser.  
-https://<adres_IP_serwera>:9090  
+https://<server_ip_address>:9090  
 ![alt text](./assets/cockpit.png)  
